@@ -66,4 +66,7 @@ public class User {
         return true;
     }
 
+    public boolean login(String password) {
+        return this.password.equals(password);
+    }
 }
