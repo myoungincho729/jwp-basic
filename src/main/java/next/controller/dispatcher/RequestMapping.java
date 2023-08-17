@@ -10,9 +10,10 @@ public class RequestMapping {
     static {
         matcher.put("/", new HomeController());
         matcher.put("/users/form", new ForwardController("/user/form.jsp"));
-        matcher.put("/users/create", new CreateUserController());
         matcher.put("/users/loginForm", new ForwardController("/user/login.jsp"));
+        matcher.put("/users/create", new CreateUserController());
         matcher.put("/users/list", new ListUserController());
+        matcher.put("/users/login", new LoginController());
     }
 
     public static Controller findController(String uri) {
