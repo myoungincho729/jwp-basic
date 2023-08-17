@@ -1,9 +1,6 @@
 package next.controller.dispatcher;
 
-import next.controller.Controller;
-import next.controller.CreateUserController2;
-import next.controller.HelloController;
-import next.controller.HomeController;
+import next.controller.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +9,8 @@ public class RequestMapping {
     private static Map<String, Controller> matcher = new HashMap<>();
     static {
         matcher.put("/", new HomeController());
-        matcher.put("/user/create", new CreateUserController2());
+        matcher.put("/users/form", new ForwardController("/user/form.jsp"));
+        matcher.put("/users/create", new CreateUserController());
         matcher.put("/hello", new HelloController());
     }
 
