@@ -11,7 +11,6 @@ public class RequestMapping {
         matcher.put("/", new HomeController());
         matcher.put("/users/form", new ForwardController("/user/form.jsp"));
         matcher.put("/users/create", new CreateUserController());
-        matcher.put("/hello", new HelloController());
     }
 
     public static Controller findController(String uri) {
