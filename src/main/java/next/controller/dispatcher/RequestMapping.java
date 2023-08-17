@@ -15,6 +15,7 @@ public class RequestMapping {
         matcher.put("/users/list", new ListUserController());
         matcher.put("/users/login", new LoginController());
         matcher.put("/users/logout", new LogoutController());
+        matcher.put("/users/profile", new ProfileController());
     }
 
     public static Controller findController(String uri) {
