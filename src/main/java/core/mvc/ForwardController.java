@@ -1,6 +1,4 @@
-package next.controller.dispatcher;
-
-import next.controller.Controller;
+package core.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,4 +1,4 @@
-package next.controller.dispatcher;
+package core.mvc;
 
 import next.controller.*;
 import org.slf4j.Logger;
