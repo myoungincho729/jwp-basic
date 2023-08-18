@@ -10,78 +10,57 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class JdbcTemplate {
-    public void update(PreparedStatementSetter pstmtSetter) throws SQLException {
+public class JdbcTemplate {
+    public void update(String sql, PreparedStatementSetter pstmtSetter) throws SQLException {
         // TODO 구현 필요함.
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
-            if (pstmtSetter != null){
-                pstmtSetter.setValues(pstmt);
-            }
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
+
+            pstmtSetter.setValues(pstmt);
 
             pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
+        } catch (SQLException e) {
 
-            if (con != null) {
-                con.close();
-            }
         }
     }
 
-    public Object queryForObject(PreparedStatementSetter pstmtSetter, RowMapper rowMapper) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = createQuery();
-            pstmt = con.prepareStatement(sql);
-            if (pstmtSetter != null){
-                pstmtSetter.setValues(pstmt);
-            }
-            rs = pstmt.executeQuery();
-            Object obj = null;
-            if (rs.next()) {
-                obj = rowMapper.mapRow(rs);
-            }
+    public Object queryForObject(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(sql)) {
 
-            return obj;
-        } finally {
-            if (rs != null) {
-                rs.close();
+            pss.setValues(pstmt);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                Object obj = null;
+                if (rs.next()) {
+                    obj = rm.mapRow(rs);
+                }
+                return obj;
+            } catch (SQLException e) {
+
             }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
+        } catch (SQLException e) {
+
         }
+        return null;
     }
-    public List<Object> query(PreparedStatementSetter pstmtSetter, RowMapper rowMapper) throws SQLException {
+    public List<Object> query(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+
         // TODO 구현 필요함.
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            if (pstmtSetter != null){
-                pstmtSetter.setValues(pstmt);
+            if (pss != null){
+                pss.setValues(pstmt);
             }
             rs = pstmt.executeQuery();
 
             List<Object> objs = new ArrayList<>();
             while (rs.next()) {
-                Object obj = rowMapper.mapRow(rs);
+                Object obj = rm.mapRow(rs);
                 objs.add(obj);
             }
 
@@ -98,5 +77,4 @@ public abstract class JdbcTemplate {
             }
         }
     }
-    public abstract String createQuery();
 }
