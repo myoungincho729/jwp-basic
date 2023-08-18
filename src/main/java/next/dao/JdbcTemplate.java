@@ -16,7 +16,7 @@ public abstract class JdbcTemplate {
             con = ConnectionManager.getConnection();
             String sql = createQuery();
             pstmt = con.prepareStatement(sql);
-            setValues(user, pstmt);
+            setValues(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -30,5 +30,5 @@ public abstract class JdbcTemplate {
         }
     }
     public abstract String createQuery();
-    public abstract void setValues(User user, PreparedStatement pstmt) throws SQLException;
+    public abstract void setValues(PreparedStatement pstmt) throws SQLException;
 }
