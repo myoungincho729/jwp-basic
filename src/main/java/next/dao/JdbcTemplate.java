@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public abstract class JdbcTemplate {
-    public void update(User user) throws SQLException {
+    public void update() throws SQLException {
         // TODO 구현 필요함.
         Connection con = null;
         PreparedStatement pstmt = null;
