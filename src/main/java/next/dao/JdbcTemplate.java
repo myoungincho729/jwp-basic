@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
+    public void update(String sql, Object... parameters) {
+        update(sql, createPSS(parameters));
+    }
     public void update(String sql, PreparedStatementSetter pss) throws DataAccessException {
         // TODO 구현 필요함.
         try (Connection con = ConnectionManager.getConnection();
@@ -23,6 +26,9 @@ public class JdbcTemplate {
             throw new DataAccessException(e);
         }
     }
+    public <T> T queryForObject(String sql, RowMapper<T> rm, Object... parameters) throws DataAccessException {
+        return queryForObject(sql, rm, createPSS(parameters));
+    }
 
     public <T> T queryForObject(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws DataAccessException {
         List<T> query = query(sql, rm, pss);
@@ -31,6 +37,11 @@ public class JdbcTemplate {
         }
         return query.get(0);
     }
+
+    public <T> List<T> query(String sql, RowMapper<T> rm, Object... parameters) throws DataAccessException {
+        return query(sql, rm, createPSS(parameters));
+    }
+
     public <T> List<T> query(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws DataAccessException {
         // TODO 구현 필요함.
         ResultSet rs = null;
@@ -58,5 +69,13 @@ public class JdbcTemplate {
                 }
             }
         }
+    }
+
+    private PreparedStatementSetter createPSS(Object... parameters) {
+        return pstmt -> {
+            for (int i = 0; i < parameters.length; i++) {
+                pstmt.setObject(i + 1, parameters[i]);
+            }
+        };
     }
 }

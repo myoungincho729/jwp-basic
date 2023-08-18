@@ -17,12 +17,10 @@ public class UserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update(
                 sql,
-                pstmt -> {
-                    pstmt.setString(1, user.getUserId());
-                    pstmt.setString(2, user.getPassword());
-                    pstmt.setString(3, user.getName());
-                    pstmt.setString(4, user.getEmail());
-                });
+                user.getUserId(),
+                user.getPassword(),
+                user.getName(),
+                user.getEmail());
     }
 
     public void update(User user) {
@@ -31,12 +29,10 @@ public class UserDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update(
                 sql,
-                pstmt -> {
-                    pstmt.setString(1, user.getPassword());
-                    pstmt.setString(2, user.getName());
-                    pstmt.setString(3, user.getEmail());
-                    pstmt.setString(4, user.getUserId());
-                });
+                user.getPassword(),
+                user.getName(),
+                user.getEmail(),
+                user.getUserId());
     }
 
     public List<User> findAll() {
@@ -49,8 +45,7 @@ public class UserDao {
                         rs.getString("password"),
                         rs.getString("name"),
                         rs.getString("email")
-                ),
-            null
+                )
         );
         return users;
     }
@@ -66,7 +61,7 @@ public class UserDao {
                         rs.getString("name"),
                         rs.getString("email")
                 ),
-                pstmt -> pstmt.setString(1, userId)
+                userId
         );
     }
 }
