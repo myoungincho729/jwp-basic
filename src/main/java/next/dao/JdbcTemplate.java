@@ -24,14 +24,14 @@ public class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(String sql, RowMapper rm, PreparedStatementSetter pss) throws DataAccessException {
-        List<Object> query = query(sql, rm, pss);
+    public <T> T queryForObject(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws DataAccessException {
+        List<T> query = query(sql, rm, pss);
         if (query.isEmpty()) {
             return null;
         }
         return query.get(0);
     }
-    public List<Object> query(String sql, RowMapper rm, PreparedStatementSetter pss) throws DataAccessException {
+    public <T> List<T> query(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws DataAccessException {
         // TODO 구현 필요함.
         ResultSet rs = null;
         try (Connection con = ConnectionManager.getConnection();
@@ -42,7 +42,7 @@ public class JdbcTemplate {
             }
             rs = pstmt.executeQuery();
 
-            List<Object> objs = new ArrayList<>();
+            List<T> objs = new ArrayList<>();
             while (rs.next()) {
                 objs.add(rm.mapRow(rs));
             }

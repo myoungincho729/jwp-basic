@@ -42,7 +42,7 @@ public class UserDao {
     public List<User> findAll() {
         String sql = "SELECT userId, password, name, email FROM USERS";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        List<Object> query = jdbcTemplate.query(
+        List<User> users = jdbcTemplate.query(
                 sql,
                 rs -> new User(
                         rs.getString("userId"),
@@ -52,15 +52,13 @@ public class UserDao {
                 ),
             null
         );
-        return query.stream()
-                .map(obj -> (User) obj)
-                .collect(Collectors.toList());
+        return users;
     }
 
     public User findByUserId(String userId) {
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        return (User) jdbcTemplate.queryForObject(
+        return jdbcTemplate.queryForObject(
                 sql,
                 rs -> new User(
                         rs.getString("userId"),
