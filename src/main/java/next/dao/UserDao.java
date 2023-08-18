@@ -29,31 +29,15 @@ public class UserDao {
 
     public void update(User user) throws SQLException {
         // TODO 구현 필요함.
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = createQueryForUpdate();
-            pstmt = con.prepareStatement(sql);
-            setValuesForUpdate(user, pstmt);
-
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
-        }
+        UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate();
+        updateJdbcTemplate.update(user, this);
     }
 
-    private String createQueryForUpdate() {
+    public String createQueryForUpdate() {
         return "UPDATE USERS SET password=?, name=?, email=? WHERE userId=?";
     }
 
-    private void setValuesForUpdate(User user, PreparedStatement pstmt) throws SQLException {
+    public void setValuesForUpdate(User user, PreparedStatement pstmt) throws SQLException {
         pstmt.setString(1, user.getPassword());
         pstmt.setString(2, user.getName());
         pstmt.setString(3, user.getEmail());
