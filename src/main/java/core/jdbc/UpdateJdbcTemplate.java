@@ -1,4 +1,4 @@
-package next.dao;
+package core.jdbc;
 
 import core.jdbc.ConnectionManager;
 import next.model.User;
