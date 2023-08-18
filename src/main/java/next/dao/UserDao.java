@@ -15,6 +15,11 @@ public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
+            @Override
             public String createQuery() {
                 return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
             }
@@ -34,6 +39,10 @@ public class UserDao {
         // TODO 구현 필요함.
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+            @Override
             public String createQuery() {
                 return "UPDATE USERS SET password=?, name=?, email=? WHERE userId=?";
             }
@@ -50,7 +59,7 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
                 return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
@@ -66,14 +75,14 @@ public class UserDao {
             public void setValues(PreparedStatement pstmt) throws SQLException {
             }
         };
-        List<Object> query = selectJdbcTemplate.query();
+        List<Object> query = jdbcTemplate.query();
         return query.stream()
                 .map(obj -> (User) obj)
                 .collect(Collectors.toList());
     }
 
     public User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
                 return new User(
@@ -94,6 +103,6 @@ public class UserDao {
                 pstmt.setString(1, userId);
             }
         };
-        return (User) selectJdbcTemplate.queryForObject();
+        return (User) jdbcTemplate.queryForObject();
     }
 }
