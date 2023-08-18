@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import core.jdbc.ConnectionManager;
 import next.model.User;
@@ -26,7 +27,7 @@ public class UserDao {
                 pstmt.setString(4, user.getEmail());
             }
         };
-        jdbcTemplate.update(user);
+        jdbcTemplate.update();
     }
 
     public void update(User user) throws SQLException {
@@ -45,71 +46,54 @@ public class UserDao {
                 pstmt.setString(4, user.getUserId());
             }
         };
-        jdbcTemplate.update(user);
+        jdbcTemplate.update();
     }
 
     public List<User> findAll() throws SQLException {
-        // TODO 구현 필요함.
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS";
-            pstmt = con.prepareStatement(sql);
-
-            rs = pstmt.executeQuery();
-
-            List<User> users = new ArrayList<>();
-            while (rs.next()) {
-                User user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
                         rs.getString("email"));
-                users.add(user);
             }
 
-            return users;
-        } finally {
-            if (rs != null) {
-                rs.close();
+            @Override
+            public String createQuery() {
+                return "SELECT userId, password, name, email FROM USERS";
             }
-            if (pstmt != null) {
-                pstmt.close();
+
+            @Override
+            public void setValues(PreparedStatement pstmt) throws SQLException {
             }
-            if (con != null) {
-                con.close();
-            }
-        }
+        };
+        List<Object> query = selectJdbcTemplate.query();
+        return query.stream()
+                .map(obj -> (User) obj)
+                .collect(Collectors.toList());
     }
 
     public User findByUserId(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, userId);
-
-            rs = pstmt.executeQuery();
-
-            User user = null;
-            if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
+        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
             }
 
-            return user;
-        } finally {
-            if (rs != null) {
-                rs.close();
+            @Override
+            public String createQuery() {
+                return  "SELECT userId, password, name, email FROM USERS WHERE userid=?";
             }
-            if (pstmt != null) {
-                pstmt.close();
+
+            @Override
+            public void setValues(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, userId);
             }
-            if (con != null) {
-                con.close();
-            }
-        }
+        };
+        return (User) selectJdbcTemplate.queryForObject();
     }
 }
