@@ -12,7 +12,7 @@ import core.jdbc.ConnectionManager;
 import next.model.User;
 
 public class UserDao {
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.update(
@@ -25,7 +25,7 @@ public class UserDao {
                 });
     }
 
-    public void update(User user) throws SQLException {
+    public void update(User user) {
         // TODO 구현 필요함.
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userId=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
@@ -39,36 +39,36 @@ public class UserDao {
                 });
     }
 
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         String sql = "SELECT userId, password, name, email FROM USERS";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         List<Object> query = jdbcTemplate.query(
                 sql,
-                null,
                 rs -> new User(
                         rs.getString("userId"),
                         rs.getString("password"),
                         rs.getString("name"),
                         rs.getString("email")
-                )
+                ),
+            null
         );
         return query.stream()
                 .map(obj -> (User) obj)
                 .collect(Collectors.toList());
     }
 
-    public User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId) {
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         return (User) jdbcTemplate.queryForObject(
                 sql,
-                pstmt -> pstmt.setString(1, userId),
                 rs -> new User(
-                    rs.getString("userId"),
-                    rs.getString("password"),
-                    rs.getString("name"),
-                    rs.getString("email")
-                )
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                ),
+                pstmt -> pstmt.setString(1, userId)
         );
     }
 }
