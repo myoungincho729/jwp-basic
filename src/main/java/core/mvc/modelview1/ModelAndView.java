@@ -1,4 +1,4 @@
-package core.mvc.modelandview;
+package core.mvc.modelview1;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

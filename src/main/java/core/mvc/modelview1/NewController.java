@@ -1,6 +1,4 @@
-package core.mvc.modelandview;
-
-import core.mvc.modelandview.ModelAndView;
+package core.mvc.modelview1;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

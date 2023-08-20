@@ -1,14 +1,13 @@
-package core.mvc.modelandview.controller.user;
+package core.mvc.modelview1.controller.user;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import core.mvc.Controller;
-import core.mvc.modelandview.JspView;
-import core.mvc.modelandview.Model;
-import core.mvc.modelandview.ModelAndView;
-import core.mvc.modelandview.NewController;
+import core.mvc.modelview1.JspView;
+import core.mvc.modelview1.Model;
+import core.mvc.modelview1.ModelAndView;
+import core.mvc.modelview1.NewController;
 import next.controller.UserSessionUtils;
 
 public class LogoutController implements NewController {

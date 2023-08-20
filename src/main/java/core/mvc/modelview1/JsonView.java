@@ -1,4 +1,4 @@
-package core.mvc.modelandview;
+package core.mvc.modelview1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

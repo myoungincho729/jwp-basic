@@ -1,4 +1,4 @@
-package core.mvc.modelandview.controller;
+package core.mvc.modelview1.controller;
 
 import javax.servlet.http.HttpSession;
 

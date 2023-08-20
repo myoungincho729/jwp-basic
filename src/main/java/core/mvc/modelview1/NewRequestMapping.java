@@ -1,10 +1,10 @@
-package core.mvc.modelandview;
+package core.mvc.modelview1;
 
-import core.mvc.modelandview.controller.HomeController;
-import core.mvc.modelandview.controller.qna.AddAnswerController;
-import core.mvc.modelandview.controller.qna.DeleteAnswerController;
-import core.mvc.modelandview.controller.qna.ShowController;
-import core.mvc.modelandview.controller.user.*;
+import core.mvc.modelview1.controller.HomeController;
+import core.mvc.modelview1.controller.qna.AddAnswerController;
+import core.mvc.modelview1.controller.qna.DeleteAnswerController;
+import core.mvc.modelview1.controller.qna.ShowController;
+import core.mvc.modelview1.controller.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

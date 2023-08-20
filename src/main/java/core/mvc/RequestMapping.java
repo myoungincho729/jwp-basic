@@ -3,7 +3,6 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
-import core.mvc.modelandview.NewController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

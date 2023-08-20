@@ -1,4 +1,4 @@
-package core.mvc.modelandview;
+package core.mvc.modelview1;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
