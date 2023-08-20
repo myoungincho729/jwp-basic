@@ -3,6 +3,7 @@ package core.mvc;
 import java.util.HashMap;
 import java.util.Map;
 
+import next.controller.question.ShowController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,11 @@ public class RequestMapping {
         mappings.put("/users/create", new CreateUserController());
         mappings.put("/users/updateForm", new UpdateFormUserController());
         mappings.put("/users/update", new UpdateUserController());
+
+        // qna
+//        mappings.put("/question/questionForm", new ForwardController("/qna/form.jsp"));
+//        mappings.put("/question/questionForm", new ForwardController("/qna/form.jsp"));
+        mappings.put("/question/show", new ShowController());
 
         logger.info("Initialized Request Mapping!");
     }
