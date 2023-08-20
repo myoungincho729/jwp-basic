@@ -8,6 +8,7 @@ String.prototype.format = function() {
   });
 };
 
+//답변하기
 $(".answerWrite input[type=submit]").click(addAnswer);
 
 function addAnswer(e) {
@@ -37,4 +38,26 @@ function onSuccess(json, status) {
       json.contents,
       json.answerId);
   $(".qna-comment-slipp-articles").prepend(template);
+}
+
+//답변삭제하기
+$(".form-delete button[type=submit]").click(deleteAnswer);
+
+function deleteAnswer(e) {
+  e.preventDefault();
+
+  var btn = $(this);
+  var queryString = btn.closest("form").serialize();
+  $.ajax({
+    type: 'post',
+    url: '/api/qna/deleteAnswer',
+    data: queryString,
+    dataType: 'json',
+    error: function (err) {
+      console.log(err);
+    },
+    success: function (json, status) {
+      btn.closest(".article").remove();
+    }
+  })
 }
