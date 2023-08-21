@@ -8,7 +8,9 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 
+@WebFilter(value = "/*", filterName = "characterEncoding")
 public class CharacterEncodingFilter implements Filter {
     private static final String DEFAULT_ENCODING = "UTF-8";
 
@@ -19,6 +21,7 @@ public class CharacterEncodingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        System.out.println("CharacterEncodingFilter.doFilter");
         request.setCharacterEncoding(DEFAULT_ENCODING);
         response.setCharacterEncoding(DEFAULT_ENCODING);
         chain.doFilter(request, response);
