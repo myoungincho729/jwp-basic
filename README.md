@@ -18,4 +18,40 @@
   * Jsp에서는 모델 데이터를 이용해서 HTML생성하고 응답한다.
 
 #### 7. next.web.qna package의 ShowController는 멀티 쓰레드 상황에서 문제가 발생하는 이유에 대해 설명하라.
-* 
+* ShowController는 QuestionDao, AnswerDao, Question, List<Answer>필드를 private으로 공유하고 있음
+* A가 ```/qna/show?questionId=1```요청을 보내고 B가 ```/qna/show?questionId=2``` 요청을 보내는 경우를 생각해보자.
+* A의 요청은 ShowController에서 1번 질문에 대한 질문 내용과 답변들을 Dao에서 가져온다.(question -> 1번질문내용, answers-> 1번질문의 답변들)
+* 만약 A요청이 끝나기 전에, 즉 ShowController의 service메서드가 끝나기 전에 B의 요청을 처리할 경우에 B요청을 처리하는 쓰레드에서 ShowController-service가 실행되고, Dao에서 2번질문에 대한 질문-답변을 가져오게 된다.(question -> 2번질문 내용, answers -> 2번질문 답변들)
+* 각 쓰레드는 Dao, question, answers를 공유하기 때문에 A 요청의 응답으로 2번질문에 대한 내용과 답변들을 반환하게 된다.
+* 따라서 A는 1번 질문 상세페이지를 원했지만 2번 질문의 상세페이지를 응답받는다.
+* 이를 해결하기 위해서는 각 요청마다 Question, List<Answer>를 따로 반환할 수 있도록 해당 필드를 로컬변수로 선언해야 한다.
+```java
+public class ShowController extends AbstractController {
+    private QuestionDao questionDao = new QuestionDao();
+    private AnswerDao answerDao = new AnswerDao();
+    private Question question;
+    private List<Answer> answers;
+
+    @Override
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
+        Long questionId = Long.parseLong(req.getParameter("questionId"));
+
+        question = questionDao.findById(questionId);
+        answers = answerDao.findAllByQuestionId(questionId);
+      ...
+```
+위의 코드에서 아래의 코드로 수정한다.
+```java
+public class ShowController extends AbstractController {
+    private QuestionDao questionDao = new QuestionDao();
+    private AnswerDao answerDao = new AnswerDao();
+
+    @Override
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
+        Long questionId = Long.parseLong(req.getParameter("questionId"));
+
+        Question question = questionDao.findById(questionId);
+        List<Answer> answers = answerDao.findAllByQuestionId(questionId);
+      ...
+```
+
