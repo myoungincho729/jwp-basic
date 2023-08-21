@@ -17,7 +17,7 @@ public class QuestionDao {
     public Question insert(Question question) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO QUESTIONS " + 
-                "(writer, title, contents, createdDate) " + 
+                "(writer, title, contents, createdDate) " +
                 " VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -34,6 +34,13 @@ public class QuestionDao {
         KeyHolder keyHolder = new KeyHolder();
         jdbcTemplate.update(psc, keyHolder);
         return findById(keyHolder.getId());
+    }
+
+    public void updateCountOfComments(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS SET countOfAnswer = ? WHERE questionId = ?";
+
+        jdbcTemplate.update(sql, question.getCountOfComment(), question.getQuestionId());
     }
     
     public List<Question> findAll() {

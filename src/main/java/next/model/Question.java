@@ -84,4 +84,8 @@ public class Question {
             return false;
         return true;
     }
+
+    public void addCountOfComments() {
+        countOfComment++;
+    }
 }

@@ -18,9 +18,13 @@ function addAnswer(e) {
 
 function onSuccess(json, status){
   var answer = json.answer;
+  var countOfComments = json.question.countOfComment;
   var answerTemplate = $("#answerTemplate").html();
   var template = answerTemplate.format(answer.writer, new Date(answer.createdDate), answer.contents, answer.answerId, answer.answerId);
   $(".qna-comment-slipp-articles").prepend(template);
+  $(".qna-comment-count strong").text(countOfComments);
+  $(".answerWrite input[name=writer]").val("");
+  $(".answerWrite textarea[name=contents]").val("");
 }
 
 function onError(xhr, status) {
