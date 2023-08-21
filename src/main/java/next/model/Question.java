@@ -92,4 +92,22 @@ public class Question {
     public void subCountOfComments() {
         countOfComment--;
     }
+
+    public boolean isSameWriter(User user) {
+        return writer.equals(user.getName());
+    }
+
+    public void updateTitle(String title) {
+        if (title == null || title.isEmpty()) {
+            return;
+        }
+        this.title = title;
+    }
+
+    public void updateContents(String contents) {
+        if (contents == null || contents.isEmpty()) {
+            return;
+        }
+        this.contents = contents;
+    }
 }
