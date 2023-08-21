@@ -13,8 +13,8 @@ import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 
 public class DeleteAnswerController extends AbstractController {
-    private AnswerDao answerDao = new AnswerDao();
-    private QuestionDao questionDao = new QuestionDao();
+    private QuestionDao questionDao = QuestionDao.getInstance();
+    private AnswerDao answerDao = AnswerDao.getInstance();
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long answerId = Long.parseLong(request.getParameter("answerId"));
@@ -26,6 +26,7 @@ public class DeleteAnswerController extends AbstractController {
             Question question = questionDao.findById(answer.getQuestionId());
             question.subCountOfComments();
             questionDao.updateCountOfComments(question);
+
             mav
                     .addObject("result", Result.ok())
                     .addObject("question", question);
