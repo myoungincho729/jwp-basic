@@ -14,6 +14,7 @@ public class ConnectionManager {
     private static final String DB_PW = "";
 
     public static DataSource getDataSource() {
+        System.out.println("ConnectionManager.getDataSource");;
         BasicDataSource ds = new BasicDataSource();
         ds.setDriverClassName(DB_DRIVER);
         ds.setUrl(DB_URL);

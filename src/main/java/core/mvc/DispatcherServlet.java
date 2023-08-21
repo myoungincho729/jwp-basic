@@ -20,6 +20,7 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
+        logger.info("servlet init!!");
         rm = new RequestMapping();
         rm.initMapping();
     }

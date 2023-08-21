@@ -34,6 +34,7 @@ public class ResourceFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         this.defaultRequestDispatcher = filterConfig.getServletContext().getNamedDispatcher("default");
+        System.out.println("ResourceFilter.init");
     }
 
     @Override
