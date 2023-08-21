@@ -88,4 +88,8 @@ public class Question {
     public void addCountOfComments() {
         countOfComment++;
     }
+
+    public void subCountOfComments() {
+        countOfComment--;
+    }
 }

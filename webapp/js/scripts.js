@@ -40,3 +40,31 @@ String.prototype.format = function() {
         ;
   });
 };
+
+$(".form-delete button[type=submit]").click(deleteAnswer);
+
+function deleteAnswer(e) {
+  e.preventDefault();
+
+  var deleteBtn = $(this);
+  var queryString = deleteBtn.closest("form").serialize();
+  console.log("qs : " + queryString);
+
+  $.ajax({
+    type: 'post',
+    url: "/api/qna/deleteAnswer",
+    data: queryString,
+    dataType: 'json',
+    error: function (xhr, status) {
+      alert("error");
+    },
+    success: function (json, status) {
+      var result = json.result;
+      var countOfComments = json.question.countOfComment
+      if (result.status) {
+        deleteBtn.closest('article').remove();
+        $(".qna-comment-count strong").text(countOfComments);
+      }
+    }
+  });
+}
