@@ -7,21 +7,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import core.mvc.Controller;
-import core.mvc.JsonView;
-import core.mvc.View;
+import core.mvc.*;
 import next.dao.AnswerDao;
 import next.model.Result;
 
-public class DeleteAnswerController implements Controller {
+public class DeleteAnswerController extends AbstractController {
     @Override
-    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         Long answerId = Long.parseLong(req.getParameter("answerId"));
         AnswerDao answerDao = new AnswerDao();
 
         answerDao.delete(answerId);
 
-        req.setAttribute("result", Result.ok());
-        return new JsonView();
+        return jsonView().addObject("result", Result.ok());
     }
 }

@@ -3,21 +3,19 @@ package next.controller.user;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import core.mvc.JspView;
-import core.mvc.View;
+import core.mvc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import core.mvc.Controller;
 import next.controller.UserSessionUtils;
 import next.dao.UserDao;
 import next.model.User;
 
-public class UpdateUserController implements Controller {
+public class UpdateUserController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
 
     @Override
-    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         UserDao userDao = new UserDao();
         User user = userDao.findByUserId(req.getParameter("userId"));
         if (!UserSessionUtils.isSameUser(req.getSession(), user)) {
@@ -31,6 +29,6 @@ public class UpdateUserController implements Controller {
                 req.getParameter("email"));
         log.debug("Update User : {}", updateUser);
         user.update(updateUser);
-        return new JspView("redirect:/");
+        return jspView("redirect:/");
     }
 }
