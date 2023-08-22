@@ -23,17 +23,15 @@ public class AnnotationHandlerMapping {
         this.basePackage = basePackage;
     }
 
-    public void initialize() throws InstantiationException, IllegalAccessException {
+    public void initialize() {
         ControllerScanner controllerScanner = new ControllerScanner(basePackage);
-        Map<Class<?>, Object> instances = controllerScanner.getInstances();
+        Map<Class<?>, Object> instances = controllerScanner.getControllers();
+
         for (Class key : instances.keySet()) {
             Predicate<AnnotatedElement> annotatedElementPredicate = ReflectionUtils.withAnnotation(RequestMapping.class);
             Set<Method> methods = ReflectionUtils.getAllMethods(key, annotatedElementPredicate);
             for (Method method : methods) {
-                System.out.println(method.getName());
                 RequestMapping annotation = method.getAnnotation(RequestMapping.class);
-                System.out.println("annotation.value() = " + annotation.value());
-                System.out.println("annotation.method() = " + annotation.method());
 
                 HandlerKey handlerKey = new HandlerKey(annotation.value(), annotation.method());
                 HandlerExecution handlerExecution = new HandlerExecution(instances.get(key), method);
@@ -41,6 +39,8 @@ public class AnnotationHandlerMapping {
                 handlerExecutions.put(handlerKey, handlerExecution);
             }
         }
+
+
     }
 
     public HandlerExecution getHandler(HttpServletRequest request) {
