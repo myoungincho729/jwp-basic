@@ -1,6 +1,10 @@
 package core.ref;
 
 public class Junit4Test {
+    public Junit4Test() {
+        System.out.println("constructor call...");
+    }
+
     @MyTest
     public void one() throws Exception {
         System.out.println("Running Test1");
